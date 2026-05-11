@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  kvm:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: kvm
+    restart: always
+    ports:
+      - "4800:4800"
+    environment:
+      MQTT_URL: mqtt://mqtt:1883
+    depends_on:
+      - mqtt
+  mqtt:
+    image: eclipse-mosquitto:2
+    container_name: mqtt
+    restart: always
+    ports:
+      - "1883:1883"

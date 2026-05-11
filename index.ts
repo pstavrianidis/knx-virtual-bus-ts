@@ -1,4 +1,5 @@
 import { EventEmitter } from 'events';
+import { mqttService } from './mqtt.service';
 
 type DeviceType = 'switch' | 'blind' | 'motion';
 
@@ -20,6 +21,18 @@ export class VirtualKNXBus extends EventEmitter {
     '1/0/3': { name: 'Sensor 1', type: 'motion', value: false }
   };
 
+  constructor() {
+    super();
+    mqttService.connect();
+    mqttService.subscribe('kvm/#');
+    mqttService.setMessageHandler((topic, payload) => {
+      if (topic.startsWith('kvm/write/')) {
+        const address = topic.replace('kvm/write/', '');
+        this.write(address, payload);
+      }
+    });
+  }
+
   read(address: string): any {
     return this.devices[address]?.value;
   }
@@ -40,7 +53,11 @@ export class VirtualKNXBus extends EventEmitter {
 // --- Demo mode ---
 if (require.main === module) {
   const bus = new VirtualKNXBus();
-  bus.on('telegram', (msg: Telegram) => console.log('Telegram:', msg));
+  bus.on('telegram', (msg: Telegram) => {
+    console.log('Telegram:', msg);
+    mqttService.publish('kvm/telegram', msg);
+  });
+  
 
   setInterval(() => {
     const newValue = !bus.read('1/0/1');

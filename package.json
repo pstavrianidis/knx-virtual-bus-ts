@@ -5,6 +5,7 @@
   "module": "CommonJS",
   "scripts": {
     "dev": "nodemon index.ts",
+    "build": "tsc && node dist/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -13,12 +14,14 @@
   "description": "",
   "dependencies": {
     "express": "^5.2.0",
+    "mqtt": "^5.15.1",
     "nodemon": "^3.1.11",
-    "ts-node": "^10.9.2",
-    "typescript": "^5.9.3",
     "ws": "^8.18.3"
   },
   "devDependencies": {
-    "@types/node": "^24.10.1"
+    "@tsconfig/node-ts": "^23.6.4",
+    "@tsconfig/node24": "^24.0.4",
+    "@types/node": "^24.10.1",
+    "typescript": "^5.9.3"
   }
 }
