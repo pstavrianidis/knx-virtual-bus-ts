@@ -64,5 +64,5 @@ if (require.main === module) {
   setInterval(() => {
     const newValue = !bus.read('1/0/1');
     bus.write('1/0/1', newValue);
-  }, 5000);
+  }, 60000);
 }
