@@ -1,3 +1,4 @@
+import dotenv from "dotenv";
 import { EventEmitter } from 'events';
 import { mqttService } from './mqtt.service';
 
@@ -13,6 +14,8 @@ interface Telegram {
   address: string;
   value: any;
 }
+
+dotenv.config();
 
 export class VirtualKNXBus extends EventEmitter {
   devices: Record<string, Device> = {
@@ -54,7 +57,7 @@ if (require.main === module) {
   const bus = new VirtualKNXBus();
   bus.on('telegram', (msg: Telegram) => {
     console.log('Telegram:', msg);
-    mqttService.publish('kvm/telegram', msg);
+    mqttService.publish('kvm/192.168.1.10:1.0.255', msg);
   });
   
 
