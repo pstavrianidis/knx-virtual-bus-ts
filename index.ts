@@ -24,7 +24,6 @@ export class VirtualKNXBus extends EventEmitter {
   constructor() {
     super();
     mqttService.connect();
-    mqttService.subscribe('kvm/#');
     mqttService.setMessageHandler((topic, payload) => {
       if (topic.startsWith('kvm/write/')) {
         const address = topic.replace('kvm/write/', '');

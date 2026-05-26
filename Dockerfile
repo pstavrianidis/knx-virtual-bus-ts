@@ -1,16 +1,17 @@
 FROM node:20-alpine
+WORKDIR /usr/src/app
 
-WORKDIR /app
-
-# Copy only production deps
+# Install dependencies first (cache)
 COPY package*.json ./
-RUN npm install --omit=dev
+RUN npm ci
 
-# Copy built app
-COPY dist ./dist
+# Copy source
+COPY . .
 
-# Expose port
-EXPOSE 4800
+# Build TypeScript sources
+RUN npm run build
 
 # Run app
-CMD ["node", "dist/index.js"]
+ENV NODE_ENV=development
+EXPOSE 4800
+CMD ["npm", "start"]

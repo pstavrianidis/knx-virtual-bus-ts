@@ -39,7 +39,7 @@ class MqttService {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   publish(topic: string, message: any) {
     if (!this.client) { console.warn('MQTT not connected, publish skipped'); return; };
-    this.client.publish(topic, JSON.stringify(message));
+    this.client.publish(topic, JSON.stringify(message), { qos: 1, retain: true });
   }
 
   subscribe(topic: string) {
