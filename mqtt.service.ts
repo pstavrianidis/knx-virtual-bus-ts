@@ -11,7 +11,11 @@ class MqttService {
     return new Promise<void>((resolve, reject) => {
       const url = process.env.MQTT_URL || 'mqtt://127.0.0.1:1883';
 
-      this.client = mqtt.connect(url);
+      this.client = mqtt.connect(url, {
+        username: "xxxx",
+        password: "xxxx",
+        reconnectPeriod: 5000, // Reconnect every 5 seconds if disconnected
+      });
 
       this.client.on('connect', () => {
         console.info(`MQTT connected to ${url}`);
